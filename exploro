@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+require File.expand_path('../config/boot', __FILE__)
+
+# If an exception occurs somewhere, halt everything
+Thread.abort_on_exception = true
+
+rack_t = Thread.new do
+  puts '=> Starting webserver thread'.green
+  STDOUT.flush
+
+  require 'rack'
+
+  Rack::Server.start(config: File.join(File.dirname(__FILE__), 'config.ru'))
+end
+
+qu_t = Thread.new do
+  puts '=> Starting worker thread'.green
+  STDOUT.flush
+
+  require 'rake'
+  require 'qu/tasks'
+
+  Rake::Task['qu:work'].invoke
+end
+
+[rack_t, qu_t].each { |t| t.join }
+puts '=> Done'.green.bold
