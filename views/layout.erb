@@ -22,7 +22,7 @@
       <script src="/js/respond.min.js"></script>
     <![endif]-->
 
-    <%= yield_content :inline_css %>
+    <%= yield_content :css %>
   </head>
 
   <body>
@@ -83,5 +83,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <%= yield_content :js %>
   </body>
 </html>
