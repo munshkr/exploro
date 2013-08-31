@@ -6,7 +6,6 @@ Thread.abort_on_exception = true
 
 rack_t = Thread.new do
   puts '=> Starting webserver thread'.green
-  STDOUT.flush
 
   require 'rack'
 
@@ -15,13 +14,15 @@ end
 
 qu_t = Thread.new do
   puts '=> Starting worker thread'.green
-  STDOUT.flush
 
   require 'rake'
   require 'qu/tasks'
 
   Rake::Task['qu:work'].invoke
 end
+
+require 'launchy'
+sleep 1; Launchy.open("http://localhost:8080/")
 
 [rack_t, qu_t].each { |t| t.join }
 puts '=> Done'.green.bold

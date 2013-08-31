@@ -10,6 +10,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.2.8)
     backports (3.3.3)
     coderay (1.0.9)
     cri (2.1.0)
@@ -22,6 +23,8 @@ GEM
     hashie (2.0.5)
     httpclient (2.3.4.1)
     json (1.8.0)
+    launchy (2.1.0)
+      addressable (~> 2.2.6)
     libxml-ruby (2.7.0)
     method_source (0.8.1)
     mini_portile (0.5.1)
@@ -81,6 +84,7 @@ DEPENDENCIES
   daybreak
   docsplit
   freeling-analyzer
+  launchy
   pry
   puma
   qu-sequel!

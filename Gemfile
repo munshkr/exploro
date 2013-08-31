@@ -23,6 +23,8 @@ gem 'puma'
 gem 'qu-sequel', path: '~/current/qu'
 gem 'sqlite3'
 
+# Misc gems
+gem 'launchy'
 gem 'term-ansicolor'
 
 group :development do
