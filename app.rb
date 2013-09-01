@@ -28,6 +28,11 @@ namespace '/projects' do
 end
 
 namespace '/documents' do
+  get '/' do
+    @documents = Document.reverse_order(:created_at).all
+    erb :'documents/index'
+  end
+
   get '/new' do
   end
 

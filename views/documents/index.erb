@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <% if @documents.count > 0 %>
+    <table class="table table-hover">
+      <thead>
+        <td>Nombre de archivo</td>
+        <td>Título</td>
+        <td>Creado en</td>
+      </thead>
+      <tbody>
+        <% @documents.each do |document| %>
+        <tr>
+          <td><%= document.filename %></td>
+          <td><%= document.title %></td>
+          <td style="width: 15em"><%= document.created_at %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% else %>
+      <div class="alert alert-info">No hay documentos cargados aún.</div>
+    <% end %>
+  </div>
+</div>
