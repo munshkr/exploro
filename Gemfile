@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 # Extractor / conversor
 gem 'docsplit'
+gem 'nokogiri'
 
 # NLP suite analyzer
 gem 'freeling-analyzer'

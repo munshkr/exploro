@@ -96,6 +96,7 @@ DEPENDENCIES
   docsplit
   freeling-analyzer
   launchy
+  nokogiri
   pry
   pry-debugger
   puma
