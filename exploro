@@ -1,29 +1,12 @@
 #!/usr/bin/env ruby
 require File.expand_path('../config/boot', __FILE__)
 
-# If an exception occurs somewhere, halt everything
-Thread.abort_on_exception = true
-
-rack_t = Thread.new do
-  puts '=> Starting webserver thread'.green
-
-  require 'rack'
-
-  Rack::Server.start(config: File.join(File.dirname(__FILE__), 'config.ru'))
-end
-
-qu_t = Thread.new do
-  puts '=> Starting worker thread'.green
-
-  require 'rake'
-  require 'qu/tasks'
-  Dir[File.join('lib', 'jobs', '*_job.rb')].each { |path| require path }
-
-  Rake::Task['qu:work'].invoke
-end
+rack_pid = spawn(File.join(APP_ROOT, 'bin', 'webserver'))
+worker_pid = spawn(File.join(APP_ROOT, 'bin', 'worker'))
 
 require 'launchy'
-sleep 1; Launchy.open("http://localhost:8080/")
+sleep 2; Launchy.open("http://localhost:8080/")
 
-[rack_t, qu_t].each { |t| t.join }
+Process.waitall
+
 puts '=> Done'.green.bold

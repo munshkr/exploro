@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+require File.expand_path('../../config/boot', __FILE__)
+
+puts '=> Starting webserver thread'.green
+
+require 'rack'
+
+Rack::Server.start(config: File.join(APP_ROOT, 'config.ru'))

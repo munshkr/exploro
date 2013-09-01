@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+require File.expand_path('../../config/boot', __FILE__)
+
+puts '=> Starting worker thread'.green
+
+require 'rake'
+require 'qu/tasks'
+Dir[File.join(APP_ROOT, 'lib', 'jobs', '*_job.rb')].each { |path| require path }
+
+Rake::Task['qu:work'].invoke

@@ -14,5 +14,3 @@ FileUtils.mkdir_p(FILES_PATH)
 require 'lib/logger'
 require 'config/database'
 require 'config/queue'
-
-puts "=> Bootstrapped".bold
