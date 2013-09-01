@@ -10,17 +10,16 @@
     <h3>Nuevo proyecto</h3>
 
     <!-- The file upload form used as target for the file upload widget -->
-    <form method="post" role="form">
+    <form id='new-project' method="post" role="form">
       <div class="row">
         <div class="col-lg-12 form-group">
           <label for="name">Nombre</label>
           <input type="text" class="form-control" id="name" name="project[name]" placeholder="Ingrese un nombre para el nuevo proyecto">
         </div>
       </div>
-
-      <button type="submit" class="btn btn-primary">Aceptar</button>
     </form>
 
+    <p>Puede seleccionar multiples archivos para cargar en el proyecto, o puede seleccionarlos más adelante.</p>
     <form id="fileupload" action="/documents/new" method="post" enctype="multipart/form-data" role="form">
       <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
       <div class="row fileupload-buttonbar">
@@ -39,11 +38,13 @@
             <i class="glyphicon glyphicon-ban-circle"></i>
             <span>Cancel upload</span>
           </button>
+          <!--
           <button type="button" class="btn btn-danger delete">
             <i class="glyphicon glyphicon-trash"></i>
             <span>Delete</span>
           </button>
           <input type="checkbox" class="toggle">
+          -->
           <!-- The loading indicator is shown during file processing -->
           <span class="fileupload-loading"></span>
         </div>
@@ -60,6 +61,8 @@
       <!-- The table listing the files available for upload/download -->
       <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
     </form>
+
+    <button id='submit-btn' class="btn btn-lg btn-primary">Aceptar</button>
   </div>
 </div>
 

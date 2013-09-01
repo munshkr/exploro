@@ -29,4 +29,14 @@ $(function () {
   }).fail(function(e, data) {
     console.error(data);
   });
+
+  $('#new-project').submit(function(e) {
+    // FIXME Upload files (if any) before submitting
+    //$('#fileupload').submit();
+  });
+
+  $('#submit-btn').click(function() {
+    console.log('submit');
+    $('#new-project').submit();
+  });
 });
