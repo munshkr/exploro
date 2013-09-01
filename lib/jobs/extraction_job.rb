@@ -25,11 +25,11 @@ class ExtractionJob
     logger.info "Clean old pages (if any)"
     doc.pages_dataset.destroy
 
-    DB.transaction do
-      logger.info "Iterate through every page and text line, normalize and store them"
-      xml.css("page").each_with_index do |xml_page, page_index|
-        logger.info "Page #{page_index + 1}"
+    logger.info "Iterate through every page and text line, normalize and store them"
+    xml.css("page").each_with_index do |xml_page, page_index|
+      logger.info "Page #{page_index + 1}"
 
+      DB.transaction do
         logger.debug "Create page #{page_index + 1} and store text lines and attributes"
         page = doc.add_page({
           num: page_index + 1,
@@ -50,8 +50,8 @@ class ExtractionJob
         end
         logger.debug "#{page.text_lines_dataset.count} text lines were processed"
       end
-      logger.info "#{doc.pages_dataset.count} pages were processed"
     end
+    logger.info "#{doc.pages_dataset.count} pages were processed"
 
     logger.info "Save document"
     doc.update(percentage: 5)
