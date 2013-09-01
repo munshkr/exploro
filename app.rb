@@ -54,6 +54,11 @@ namespace '/documents' do
     { files: [jqupload_response(@document)] }.to_json
   end
 
+  get '/:id' do |id|
+    @document = Document[id]
+    erb :'documents/view'
+  end
+
   helpers do
     def jqupload_response(document)
       { name: document.filename,

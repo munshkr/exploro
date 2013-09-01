@@ -2,3 +2,19 @@ body {
   min-height: 2000px;
   padding-top: 70px;
 }
+
+/* /documents/view */
+ul.pages {
+  list-style-type: none;
+  padding-left: 0;
+  text-align: justify; text-justify: newspaper
+}
+ul.pages li {
+  font-family: "Lucida Console", Monaco, monospace;
+  background-color: #eee;
+  margin-bottom: 1em;
+  padding: 1em;
+}
+.text-line {
+  margin: 0.5em 0;
+}

@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row">
+    <h2><%= @document.filename %></h2><p class="small"><%= @document.title %></p>
+  </div>
+  <div class="row">
+    <div class="col-lg-9">
+      <ul class="pages">
+        <% @document.pages_dataset.order(:num).each do |page| %>
+        <li>
+          <% page.text_lines_dataset.order(:num).each do |text_line| %>
+          <p class="text-line"><%= text_line.text %></p>
+          <% end %>
+        </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

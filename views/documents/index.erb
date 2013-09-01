@@ -9,11 +9,11 @@
       </thead>
       <tbody>
         <% @documents.each do |document| %>
-        <tr>
-          <td><%= document.filename %></td>
-          <td><%= document.title %></td>
-          <td style="width: 15em"><%= document.created_at %></td>
-        </tr>
+          <tr>
+            <td><a href="/documents/<%= document.id %>"><%= document.filename %></a></td>
+            <td><%= document.title %></td>
+            <td style="width: 15em"><%= document.created_at %></td>
+          </tr>
         <% end %>
       </tbody>
     </table>
