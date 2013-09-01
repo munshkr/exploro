@@ -7,5 +7,6 @@ class Project < Sequel::Model(DB[:projects])
   def validate
     super
     validates_presence :name
+    validates_unique   :name
   end
 end
