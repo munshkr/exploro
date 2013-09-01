@@ -1,14 +1,8 @@
-class Project < Sequel::Model
+class Project < Sequel::Model(DB[:projects])
   plugin :timestamps
-  plugin :schema
   plugin :validation_helpers
 
-  set_schema do
-    primary_key :id
-    String      :name, :null => false
-    DateTime    :created_at, :null => false
-    DateTime    :updated_at
-  end
+  many_to_many :documents, join_table: :documents_projects
 
   def validate
     super

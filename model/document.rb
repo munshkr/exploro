@@ -1,19 +1,8 @@
-class Document < Sequel::Model
+class Document < Sequel::Model(DB[:documents])
   plugin :timestamps
-  plugin :schema
   plugin :validation_helpers
 
-  set_schema do
-    primary_key :id
-    String      :filename, null: false
-    Integer     :size, null: false
-    String      :title
-    DateTime    :created_at, null: false
-    DateTime    :updated_at
-    DateTime    :analyzed_at
-    String      :state
-    Integer     :percentage, null: false
-  end
+  many_to_many :projects, join_table: :documents_projects
 
   def before_validation
     self.percentage ||= 0
