@@ -34,22 +34,19 @@ namespace '/documents' do
   post '/new' do
     content_type :json
 
-    documents = []
-    params[:files].each do |file_data|
-      @document = Document.create({
-        filename: file_data[:filename],
-        size: File.size?(file_data[:tempfile]),
-      })
-      documents << @document
+    file = params[:files].first
+    @document = Document.create({
+      filename: file[:filename],
+      size: File.size?(file[:tempfile]),
+    })
 
-      File.open(File.join(FILES_PATH, @document.filename), 'wb') do |fd|
-        IO.copy_stream(file_data[:tempfile], fd)
-      end
-
-      @document.process!
+    File.open(File.join(FILES_PATH, @document.filename), 'wb') do |fd|
+      IO.copy_stream(file[:tempfile], fd)
     end
 
-    { files: documents.map { |doc| jqupload_response(doc) } }.to_json
+    @document.process!
+
+    { files: [jqupload_response(@document)] }.to_json
   end
 
   helpers do

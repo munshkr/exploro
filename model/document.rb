@@ -6,13 +6,17 @@ class Document < Sequel::Model
   set_schema do
     primary_key :id
     String      :filename, null: false
-    String      :size, null: false
+    Integer     :size, null: false
     String      :title
     DateTime    :created_at, null: false
     DateTime    :updated_at
     DateTime    :analyzed_at
     String      :state
-    Integer     :percentage, null: false, default: 0
+    Integer     :percentage, null: false
+  end
+
+  def before_validation
+    self.percentage ||= 0
   end
 
   def validate

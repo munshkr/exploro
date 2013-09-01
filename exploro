@@ -12,7 +12,6 @@ rack_t = Thread.new do
   Rack::Server.start(config: File.join(File.dirname(__FILE__), 'config.ru'))
 end
 
-sleep 1
 qu_t = Thread.new do
   puts '=> Starting worker thread'.green
 

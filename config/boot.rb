@@ -8,7 +8,7 @@ class String
   include Term::ANSIColor
 end
 
-FILES_PATH = File.join(APP_ROOT, 'public', 'files')
+FILES_PATH = File.join(APP_ROOT, 'db', 'files')
 FileUtils.mkdir_p(FILES_PATH)
 
 require 'config/database'

@@ -9,7 +9,7 @@
       <tbody>
         <% @projects.each do |project| %>
         <tr>
-          <td><%= project.updated_at %></td>
+          <td style="width: 15em"><%= project.created_at %></td>
           <td><%= project.name %></td>
         </tr>
         <% end %>
