@@ -1,7 +1,11 @@
 class ExtractionJob
-  def self.perform(document_id)
+  def self.perform(id)
     # TODO
-    puts "Processing document #{document_id}..."
+    puts "Processing document #{id}..."
+
+    @document = Document[id]
+    puts "Document original filename is '#{@document.filename}'"
+
     sleep 3
     puts "Done"
   end

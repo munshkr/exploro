@@ -1,4 +1,6 @@
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..'))
+APP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+$LOAD_PATH.unshift(APP_ROOT)
+
 require 'bundler/setup'
 
 require 'term/ansicolor'
@@ -6,18 +8,10 @@ class String
   include Term::ANSIColor
 end
 
-require 'qu-sequel'
+FILES_PATH = File.join(APP_ROOT, 'public', 'files')
+FileUtils.mkdir_p(FILES_PATH)
 
-Qu.configure do |c|
-  DB_PATH = File.join(File.dirname(__FILE__), '..', 'db', 'queue.db')
-  DB_URI =  "sqlite://#{DB_PATH}"
-
-  c.backend.database_url = DB_URI
-
-  # Make sure tables are created
-  connection = ::Sequel.connect(DB_URI)
-  c.backend.class.create_tables(connection)
-  connection.disconnect
-end
+require 'config/database'
+require 'config/queue'
 
 puts "=> Bootstrapped".bold

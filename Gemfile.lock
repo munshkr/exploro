@@ -13,8 +13,16 @@ GEM
     addressable (2.2.8)
     backports (3.3.3)
     coderay (1.0.9)
+    columnize (0.3.6)
     cri (2.1.0)
     daybreak (0.3.0)
+    debugger (1.1.4)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.1.1)
+      debugger-ruby_core_source (~> 1.1.3)
+    debugger-linecache (1.1.2)
+      debugger-ruby_core_source (>= 1.1.1)
+    debugger-ruby_core_source (1.1.7)
     docsplit (0.6.4)
     faster_xml_simple (0.5.0)
       libxml-ruby (>= 0.3.8.4)
@@ -41,6 +49,9 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
+    pry-debugger (0.2.0)
+      debugger (~> 1.1.3)
+      pry (~> 0.9.9)
     puma (2.5.1)
       rack (>= 1.1, < 2.0)
     rack (1.5.2)
@@ -86,6 +97,7 @@ DEPENDENCIES
   freeling-analyzer
   launchy
   pry
+  pry-debugger
   puma
   qu-sequel!
   releasy

@@ -8,7 +8,7 @@ $(function () {
   $('#fileupload').fileupload({
     // Uncomment the following to send cross-domain cookies:
     //xhrFields: {withCredentials: true},
-    url: '/projects/new',
+    url: '/documents/new',
     //maxFileSize: 5000000,
     acceptFileTypes: /(\.|\/)(pdf|doc|xls)$/i
   });
@@ -26,5 +26,7 @@ $(function () {
   }).done(function (result) {
     $(this).fileupload('option', 'done')
     .call(this, null, {result: result});
+  }).fail(function(e, data) {
+    console.error(data);
   });
 });
