@@ -7,7 +7,9 @@ gem 'nokogiri'
 # NLP suite analyzer
 gem 'freeling-analyzer'
 
-# Main key-value store
+# Main DB and key-value store for tokens
+gem 'sequel'
+gem 'sqlite3'
 gem 'daybreak'
 
 # Fulltext search
@@ -22,7 +24,6 @@ gem 'puma'
 # Background jobs
 #gem 'qu-sequel', github: 'norbert/qu', branch: 'sequel-backend'
 gem 'qu-sequel', path: '~/current/qu'
-gem 'sqlite3'
 
 # Misc gems
 gem 'launchy'

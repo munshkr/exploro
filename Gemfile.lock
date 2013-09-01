@@ -102,6 +102,7 @@ DEPENDENCIES
   puma
   qu-sequel!
   releasy
+  sequel
   sinatra
   sinatra-contrib
   sqlite3
