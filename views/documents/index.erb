@@ -12,7 +12,7 @@
           <tr>
             <td><a href="/documents/<%= document.id %>"><%= document.filename %></a></td>
             <td><%= document.title %></td>
-            <td style="width: 15em"><%= document.created_at %></td>
+            <td style="width: 15em"><%= timeago_tag(document.created_at) %></td>
           </tr>
         <% end %>
       </tbody>

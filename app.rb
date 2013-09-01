@@ -67,3 +67,9 @@ namespace '/documents' do
     end
   end
 end
+
+helpers do
+  def timeago_tag(time)
+    "<abbr class=\"timeago\" title=\"#{time.utc.iso8601}\">#{time}</abbr>"
+  end
+end
