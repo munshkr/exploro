@@ -22,8 +22,7 @@ gem 'sinatra-contrib'
 gem 'puma'
 
 # Background jobs
-#gem 'qu-sequel', github: 'norbert/qu', branch: 'sequel-backend'
-gem 'qu-sequel', path: '~/current/qu'
+gem 'qu-sequel', github: 'munshkr/qu', branch: 'sequel-backend'
 
 # Misc gems
 gem 'launchy'

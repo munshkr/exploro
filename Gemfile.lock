@@ -1,5 +1,7 @@
-PATH
-  remote: ~/current/qu
+GIT
+  remote: git://github.com/munshkr/qu.git
+  revision: 84819b4bac2aec11b720eb334d52f6c443dc3762
+  branch: sequel-backend
   specs:
     qu (0.2.0)
       multi_json
