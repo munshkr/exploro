@@ -10,6 +10,10 @@ get '/' do
   erb :index
 end
 
+get '/about' do
+  erb :about
+end
+
 namespace '/projects' do
   get '/' do
     @projects = Project.reverse_order(:updated_at).all
