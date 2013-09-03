@@ -3,6 +3,9 @@ require 'sequel'
 DB_PATH = File.join(APP_ROOT, 'db')
 DB = Sequel.connect("sqlite://#{DB_PATH}/main.db")
 
+# Enable Write-Ahead Logging
+DB.execute "PRAGMA journal_mode = WAL"
+
 DB.create_table? :projects do
   primary_key :id
   String      :name, :null => false
@@ -54,7 +57,4 @@ DB.create_table? :text_lines do
   Integer :to_pos
 end
 
-require 'model/project'
-require 'model/document'
-require 'model/page'
-require 'model/text_line'
+Dir[File.join(APP_ROOT, 'model', '**', '*.rb')].each { |p| require p }
