@@ -70,7 +70,7 @@ module Analyzer
         })
         analyzer.sentences.each do |sentence|
           sentence.each do |token|
-            logger.debug "Token (#{cur_st[:pos]}/#{total_size}): #{token}"
+            #logger.debug "Token (#{cur_st[:pos]}/#{total_size}): #{token}"
             new_token = nil
 
             # exact match
@@ -107,11 +107,11 @@ module Analyzer
             # TODO Separate this in another class/module/method...
             if ne_class = NamedEntity::CLASSES_PER_TAG[new_token[:tag]]
               new_token[:ne_class] = ne_class
-            elsif ActionEntity.valid?(new_token)
-              new_token[:ne_class] = :actions
+            #elsif ActionEntity.valid?(new_token)
+              #new_token[:ne_class] = :actions
             end
 
-            yielder << new_token
+            yielder << [new_token, cur_st[:pos], total_size]
           end
           sentence_pos += 1
         end
@@ -124,11 +124,12 @@ module Analyzer
   #
   def self.extract_named_entities(content, lang=:es)
     Enumerator.new do |yielder|
-      self.extract_tagged_tokens(content, lang).each do |token|
-        yielder << token if token[:ne_class]
+      self.extract_tagged_tokens(content, lang).each do |token, cur_pos, total_size|
+        yielder << [token, cur_pos, total_size] if token[:ne_class]
       end
       self.extract_addresses(content, lang).each do |address|
-        yielder << address
+        # TODO return current position and total
+        yielder << [address, nil, nil]
       end
     end
   end

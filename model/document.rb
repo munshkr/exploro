@@ -20,10 +20,8 @@ class Document < Sequel::Model(DB[:documents])
 
   def process!
     if id
-      require 'qu'
-      require 'lib/jobs/extraction_job'
-
-      Qu.enqueue(ExtractionJob, id)
+      require 'lib/document_job'
+      DocumentJob.perform(id)
     end
   end
 

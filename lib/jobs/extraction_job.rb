@@ -1,4 +1,4 @@
-class ExtractionJob
+class ExtractionJob < DocumentJob
   PDFTOHTML_PATHS = %w{ /usr/local/bin/pdftohtml /usr/bin/pdftohtml }
 
   def self.perform(id)
@@ -8,7 +8,8 @@ class ExtractionJob
     doc = Document[id]
     raise "Document with id #{id} not found" if doc.nil?
 
-    doc.update(state: :extraction)
+    doc.update(state: :extraction, percentage: current_percentage(0, 100))
+    logger.info "Status #{doc.percentage} %"
 
     logger.info "Ensure document is a PDF (convert if necessary)"
     pdf_path = Docsplit.ensure_pdfs(doc.path).first
@@ -26,6 +27,7 @@ class ExtractionJob
     doc.pages_dataset.destroy
 
     logger.info "Iterate through every page and text line, normalize and store them"
+    total_pages = xml.css("page").count
     xml.css("page").each_with_index do |xml_page, page_index|
       logger.info "Page #{page_index + 1}"
 
@@ -49,15 +51,18 @@ class ExtractionJob
           })
         end
         logger.debug "#{page.text_lines_dataset.count} text lines were processed"
+
+        doc.update(percentage: current_percentage(page_index + 1, total_pages))
+        logger.info "Status #{doc.percentage} %"
       end
     end
     logger.info "#{doc.pages_dataset.count} pages were processed"
 
     logger.info "Save document"
-    doc.update(percentage: 5)
+    doc.update(percentage: current_percentage(100, 100))
+    logger.info "Status #{doc.percentage} %"
 
-    logger.info "Enqueue Layout Analysis job"
-    Qu.enqueue(LayoutAnalysisJob, id)
+    next_job!(id)
   end
 
 private

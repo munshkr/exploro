@@ -1,4 +1,5 @@
-class LayoutAnalysisJob
+class LayoutAnalysisJob < DocumentJob
+  #
   # Analyze document layout to determine optimized order of text lines for the
   # NERC analyzer.  Secondly, store processed text in the document and
   # calculate position ranges for locating a NamedEntity easily in a TextLine.
@@ -30,7 +31,7 @@ class LayoutAnalysisJob
     end
 
     logger.info "Save document"
-    doc.update(percentage: 10)
+    doc.update(percentage: current_percentage(50, 100))
 
     logger.info "Store position range of pages"
     DB.transaction do
@@ -53,10 +54,9 @@ class LayoutAnalysisJob
     end
 
     logger.info "Save document"
-    doc.update(percentage: 15)
+    doc.update(percentage: current_percentage(100, 100))
 
-    logger.info "Enqueue Entities Detection job"
-    Qu.enqueue(EntitiesDetectionJob, id)
+    next_job!(id)
   end
 
 private

@@ -1,4 +1,5 @@
-class EntitiesDetectionJob
+class EntitiesDetectionJob < DocumentJob
+  #
   # Perform a morphological analysis and extract named entities like persons,
   # organizations, places, dates and addresses.
   #
@@ -16,7 +17,7 @@ class EntitiesDetectionJob
     doc_iter = doc.iterator
 
     require 'lib/analyzer'
-    Analyzer.extract_named_entities(doc.processed_text).each do |ne_attrs|
+    Analyzer.extract_named_entities(doc.processed_text).each do |ne_attrs, cur_pos, total_size|
       inner_pos = {}
 
       doc_iter.seek(ne_attrs[:pos])
@@ -38,6 +39,9 @@ class EntitiesDetectionJob
 
       # TODO 
       # ...
+
+      doc.update(percentage: current_percentage(cur_pos, total_size))
+      #logger.info "Status #{doc.percentage} %"
 
       #ne_klass = case ne_attrs[:ne_class]
       #  when :addresses then AddressEntity
@@ -63,7 +67,7 @@ class EntitiesDetectionJob
     #}
 
     logger.info "Save document"
-    doc.update(analyzed_at: Time.now, percentage: 55)
+    doc.update(percentage: current_percentage(100, 100))
 
     #logger.info "Enqueue Coreference Resolution task"
     #Resque.enqueue(CoreferenceResolutionTask, document_id)
@@ -72,5 +76,7 @@ class EntitiesDetectionJob
     #  logger.info "Enqueue Geocoding task (#{doc.addresses_found.count} addresses found)"
     #  Resque.enqueue(GeocodingTask, document_id)
     #end
+
+    next_job!(id)
   end
 end
