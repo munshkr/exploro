@@ -6,6 +6,8 @@
         <td>Nombre de archivo</td>
         <td>Título</td>
         <td>Creado en</td>
+        <td>Estado</td>
+        <td>Progreso</td>
       </thead>
       <tbody>
         <% @documents.each do |document| %>
@@ -13,6 +15,8 @@
             <td><a href="/documents/<%= document.id %>"><%= document.filename %></a></td>
             <td><%= document.title %></td>
             <td style="width: 15em"><%= timeago_tag(document.created_at) %></td>
+            <td style="width: 15em"><%= document.state %></td>
+            <td style="width: 5em"><%= document.percentage %> %</td>
           </tr>
         <% end %>
       </tbody>
