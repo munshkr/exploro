@@ -3,6 +3,15 @@ body {
   padding-top: 70px;
 }
 
+/* /projects/new */
+.template-upload .size {
+  margin: 0;
+}
+.template-upload .progress {
+  height: 10px;
+  margin-bottom: 0;
+}
+
 /* /documents/view */
 ul.pages {
   list-style-type: none;
