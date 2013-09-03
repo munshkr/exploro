@@ -70,7 +70,9 @@ module Analyzer
         })
         analyzer.sentences.each do |sentence|
           sentence.each do |token|
-            #logger.debug "Token (#{cur_st[:pos]}/#{total_size}): #{token}"
+            cur_pos = cur_st[:pos]
+            #logger.debug "Token (#{cur_pos}/#{total_size}): #{token}"
+
             new_token = nil
 
             # exact match
@@ -111,7 +113,7 @@ module Analyzer
               #new_token[:ne_class] = :actions
             end
 
-            yielder << [new_token, cur_st[:pos], total_size]
+            yielder << [new_token, cur_pos, total_size]
           end
           sentence_pos += 1
         end

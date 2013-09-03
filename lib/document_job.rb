@@ -19,7 +19,7 @@ class DocumentJob
     if i < FLOW.size - 1
       Qu.enqueue(FLOW[i+1][:class], id)
     else
-      Document.where(id: id).update(status: nil, percentage: 100, analyzed_at: Time.now)
+      Document.where(id: id).update(state: nil, percentage: 100, analyzed_at: Time.now)
     end
   end
 

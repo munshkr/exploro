@@ -42,8 +42,10 @@ class EntitiesRecognitionJob < DocumentJob
 
       db << ne_attrs.merge(document_id: doc.id)
 
-      doc.update(percentage: current_percentage(cur_pos, total_size))
-      #logger.info "Status #{doc.percentage} %"
+      if total_size && total_size > 0
+        doc.update(percentage: current_percentage(cur_pos, total_size))
+        #logger.info "Status #{doc.percentage} %"
+      end
 
       #ne_klass = case ne_attrs[:ne_class]
       #  when :addresses then AddressEntity
