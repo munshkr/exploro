@@ -4,9 +4,9 @@ class DocumentJob
   Dir[File.join(APP_ROOT, 'lib', 'jobs', '*_job.rb')].each { |path| require path }
 
   FLOW = [
-    { :class => ExtractionJob,        :perc_ratio => 30 },
-    { :class => LayoutAnalysisJob,    :perc_ratio => 10 },
-    { :class => EntitiesDetectionJob, :perc_ratio => 60 },
+    { :class => ExtractionJob,          :perc_ratio => 30 },
+    { :class => LayoutAnalysisJob,      :perc_ratio => 10 },
+    { :class => EntitiesRecognitionJob, :perc_ratio => 60 },
   ]
 
   def self.perform(id)

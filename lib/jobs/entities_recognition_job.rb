@@ -1,4 +1,4 @@
-class EntitiesDetectionJob < DocumentJob
+class EntitiesRecognitionJob < DocumentJob
   #
   # Perform a morphological analysis and extract named entities like persons,
   # organizations, places, dates and addresses.
@@ -10,7 +10,7 @@ class EntitiesDetectionJob < DocumentJob
     doc = Document[id]
     raise "Document with id #{id} not found" if doc.nil?
 
-    doc.update(state: :entities_detection)
+    doc.update(state: :entities_recognition)
 
     logger.info "Extract named entities from content"
     #doc.named_entities_dataset.destroy
@@ -37,8 +37,10 @@ class EntitiesDetectionJob < DocumentJob
 
       ne_attrs[:inner_pos] = inner_pos
 
-      # TODO 
-      # ...
+      # TODO
+      # write CSV
+
+      db << ne_attrs.merge(document_id: doc.id)
 
       doc.update(percentage: current_percentage(cur_pos, total_size))
       #logger.info "Status #{doc.percentage} %"
@@ -57,6 +59,8 @@ class EntitiesDetectionJob < DocumentJob
       #  page.named_entities << ne
       #end
     end
+
+    db.flush
 
     #logger.info "Count classes of named entities found"
     #doc.information = {
@@ -78,5 +82,24 @@ class EntitiesDetectionJob < DocumentJob
     #end
 
     next_job!(id)
+  end
+
+private
+  def self.db
+    require 'xapian-fu'
+
+    @@db ||= XapianFu::XapianDb.new(
+      dir: File.join(DB_PATH, 'entities'),
+      create: true,
+      fields: {
+        document_id: { type: Integer, store: false },
+        text:        { type: String,  store: true  },
+        pos:         { type: Fixnum,  store: true  },
+        ne_class:    { type: String,  store: true  },
+        form:        { type: String,  store: true  },
+        lemma:       { type: String,  store: true  },
+        tag:         { type: String,  store: true  },
+      }
+    )
   end
 end
