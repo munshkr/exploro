@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
 require File.expand_path('../../config/boot', __FILE__)
 
-puts '=> Starting webserver thread'.green
+puts '=> Starting webserver'.green
+
+puts '=> Cleaning up temporarily uploaded files'
+FileUtils.rm_rf(File.join(APP_ROOT, 'tmp', 'files'))
 
 require 'rack'
 

@@ -37,9 +37,6 @@ namespace '/documents' do
     erb :'documents/index'
   end
 
-  get '/new' do
-  end
-
   post '/new' do
     content_type :json
 
