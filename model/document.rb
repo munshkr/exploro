@@ -2,7 +2,7 @@ class Document < Sequel::Model(DB[:documents])
   plugin :timestamps
   plugin :validation_helpers
 
-  many_to_many :projects, join_table: :documents_projects
+  many_to_many :projects, join_table: :documents_projects, left_key: :document_id, right_key: :project_id
   one_to_many  :pages, key: :document_id
 
   BLOCK_SEPARATOR = ".\n"

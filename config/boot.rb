@@ -8,8 +8,8 @@ class String
   include Term::ANSIColor
 end
 
+UPLOADED_FILES_PATH = File.join(APP_ROOT, 'tmp', 'files')
 FILES_PATH = File.join(APP_ROOT, 'db', 'files')
-FileUtils.mkdir_p(FILES_PATH)
 
 require 'lib/logger'
 require 'config/database'

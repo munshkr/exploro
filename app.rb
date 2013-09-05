@@ -26,8 +26,24 @@ namespace '/projects' do
   end
 
   post '/new' do
+    content_type :json
+
     @project = Project.create(params[:project])
-    redirect '/projects/'
+
+    filenames = params[:filenames].split(',')
+    filenames.each do |filename|
+      path = File.join(UPLOADED_FILES_PATH, filename)
+      doc = @project.add_document(filename: filename, size: File.size?(path))
+      doc.process!
+    end
+
+    @project.to_json
+  end
+
+  get '/:id' do |id|
+    @project = Project[id]
+    @documents = @project.documents
+    erb :'projects/view'
   end
 end
 
@@ -37,35 +53,32 @@ namespace '/documents' do
     erb :'documents/index'
   end
 
-  post '/new' do
+  post '/upload' do
     content_type :json
 
     file = params[:files].first
-    @document = Document.create({
-      filename: file[:filename],
-      size: File.size?(file[:tempfile]),
-    })
 
-    File.open(File.join(FILES_PATH, @document.filename), 'wb') do |fd|
+    filename = file[:filename]
+    size = File.size?(file[:tempfile])
+
+    # Copy file to UPLOADED_FILES_PATH
+    FileUtils.mkdir_p(UPLOADED_FILES_PATH)
+    File.open(File.join(UPLOADED_FILES_PATH, filename), 'wb') do |fd|
       IO.copy_stream(file[:tempfile], fd)
     end
 
-    @document.process!
+    require 'json'
+    { files: [{ name: filename, size: size }] }.to_json
+  end
 
-    { files: [jqupload_response(@document)] }.to_json
+  # NOTE this is only defined because of a bug in $.fileupload
+  get '/upload' do
+    halt
   end
 
   get '/:id' do |id|
     @document = Document[id]
     erb :'documents/view'
-  end
-
-  helpers do
-    def jqupload_response(document)
-      { name: document.filename,
-        size: document.size,
-        url:  "/files/#{document.filename}" }
-    end
   end
 end
 

@@ -15,6 +15,7 @@
             <input type="text" class="form-control" id="name" name="project[name]" placeholder="Ingrese un nombre para el nuevo proyecto">
           </div>
         </div>
+        <!-- TODO Add hidden input elements for each uploaded file -->
       </form>
 
       <button id='submit-btn' class="btn btn-lg btn-primary">Aceptar</button>
@@ -24,7 +25,7 @@
       <label>Archivos</label>
 
       <p>Puede seleccionar multiples archivos para cargar en el proyecto, o puede seleccionarlos más adelante.</p>
-      <form id="fileupload" action="/documents/new" method="post" enctype="multipart/form-data" role="form">
+      <form id="fileupload" action="/documents/upload" method="post" enctype="multipart/form-data" role="form">
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="row fileupload-buttonbar">
           <div class="col-lg-7">
@@ -68,6 +69,12 @@
     </div>
   </div>
 </div>
+
+<script id="template-uploaded-files-hidden-inputs" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+  <input type="hidden" name="files[]" value="{%=file.name%}" />
+{% } %}
+</script>
 
 <!-- The template to display files available for upload -->
 <script id="template-upload" type="text/x-tmpl">

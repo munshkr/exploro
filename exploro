@@ -4,8 +4,10 @@ require File.expand_path('../config/boot', __FILE__)
 rack_pid = spawn(File.join(APP_ROOT, 'bin', 'webserver'))
 worker_pid = spawn(File.join(APP_ROOT, 'bin', 'worker'))
 
-require 'launchy'
-sleep 2; Launchy.open("http://localhost:8080/")
+if not (ARGV.first == '-n' || ARGV.first == '--no-launch')
+  require 'launchy'
+  sleep 2; Launchy.open("http://localhost:8080/")
+end
 
 Process.waitall
 

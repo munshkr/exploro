@@ -3,8 +3,7 @@ require File.expand_path('../../config/boot', __FILE__)
 
 puts '=> Starting webserver'.green
 
-puts '=> Cleaning up temporarily uploaded files'
-FileUtils.rm_rf(File.join(APP_ROOT, 'tmp', 'files'))
+FileUtils.rm_rf(UPLOADED_FILES_PATH)
 
 require 'rack'
 

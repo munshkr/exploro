@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <h3>Proyecto: <%= @project.name %></h3>
+    <% if @project.documents_dataset.count > 0 %>
+    <table class="table table-condensed">
+      <thead>
+        <td>Nombre de archivo</td>
+        <td>Título</td>
+        <td>Creado en</td>
+        <td>Estado</td>
+        <td>Progreso</td>
+      </thead>
+      <tbody>
+        <% @project.documents.each do |document| %>
+          <tr>
+            <td><a href="/documents/<%= document.id %>"><%= document.filename %></a></td>
+            <td><%= document.title %></td>
+            <td style="width: 15em"><%= timeago_tag(document.created_at) %></td>
+            <td style="width: 15em"><%= document.state %></td>
+            <td style="width: 5em"><%= document.percentage %> %</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% else %>
+      <div class="alert alert-info">No hay documentos cargados aún.</div>
+    <% end %>
+  </div>
+</div>

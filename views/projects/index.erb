@@ -10,7 +10,7 @@
         <% @projects.each do |project| %>
         <tr>
           <td style="width: 15em"><%= timeago_tag(project.created_at) %></td>
-          <td><%= project.name %></td>
+          <td><a href="/projects/<%= project.id %>"><%= project.name %></a></td>
         </tr>
         <% end %>
       </tbody>

@@ -8,9 +8,9 @@ $(function () {
   $('#fileupload').fileupload({
     // Uncomment the following to send cross-domain cookies:
     //xhrFields: {withCredentials: true},
-    url: '/documents/new',
+    url: '/documents/upload',
     //maxFileSize: 5000000,
-    acceptFileTypes: /(\.|\/)(pdf|doc|xls)$/i
+    acceptFileTypes: /(\.|\/)(pdf|doc|docx|html|txt|csv|xls|xlsx)$/i
   });
 
   // Load existing files:
@@ -31,12 +31,34 @@ $(function () {
   });
 
   $('#new-project').submit(function(e) {
-    // FIXME Upload files (if any) before submitting
-    //$('#fileupload').submit();
+    e.preventDefault();
+
+    // TODO validate project's name presence
+
+    var data = $(this).serializeArray();
+    var filenames = $.makeArray($('#fileupload .files .name span').map(function(i, e) { return $(e).text(); }));
+
+    // TODO validate with a better error message than an alert
+    if (filenames.length == 0) {
+      alert("Debes subir al menos un documento");
+      return false;
+    }
+
+    data.push({
+      name: 'filenames',
+      value: filenames
+    });
+    console.log(JSON.stringify(data));
+
+    $.post('/projects/new', data, function(res) {
+      // TODO redirect to /project/:id with a success flash message, or something like that
+      alert(JSON.stringify(res));
+    }).error(function() {
+      alert("Ocurrió un error");
+    });
   });
 
   $('#submit-btn').click(function() {
-    console.log('submit');
     $('#new-project').submit();
   });
 });
