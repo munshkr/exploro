@@ -1,7 +1,12 @@
 <tr>
-  <td>
-    <p><a href="/documents/<%= document.id %>"><%= document.filename %></a></p>
+  <td><a href="/documents/<%= document.id %>"><%= document.filename %></a></td>
+  <td style="width: 15em"><%= timeago_tag(document.created_at) %></td>
+  <td style="width: 15em"><%= document.state %></td>
+  <td style="width: 5em"><%= document.percentage %> %</td>
+</tr>
 
+<tr class="tools">
+  <td colspan="2">
     <a class="btn btn-default btn-xs" href="/documents/<%= document.id %>/download">
       <span class="glyphicon glyphicon-download-alt"></span> Descargar
     </a>
@@ -36,7 +41,14 @@
       </ul>
     </div>
   </td>
-  <td style="width: 15em"><%= timeago_tag(document.created_at) %></td>
-  <td style="width: 15em"><%= document.state %></td>
-  <td style="width: 5em"><%= document.percentage %> %</td>
+
+  <td colspan="2">
+  <% if document.percentage < 100 %>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="<%= document.percentage %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= document.percentage %>%;">
+        <span class="sr-only"><%= document.percentage %>% Completo</span>
+      </div>
+    </div>
+  <% end %>
+  </td>
 </tr>

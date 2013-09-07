@@ -27,3 +27,14 @@ ul.pages li {
 .text-line {
   margin: 0.5em 0;
 }
+
+/* _document_row */
+.table tbody > tr.tools > td {
+  border-top: 0;
+}
+.table tbody > tr.tools > td .progress {
+  display: inline-table;
+  height: 20px;
+  margin-bottom: 0;
+  width: 100%;
+}
