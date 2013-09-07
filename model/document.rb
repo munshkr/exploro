@@ -2,10 +2,22 @@ class Document < Sequel::Model(DB[:documents])
   plugin :timestamps
   plugin :validation_helpers
 
-  many_to_many :projects, join_table: :documents_projects, left_key: :document_id, right_key: :project_id
-  one_to_many  :pages, key: :document_id
+  many_to_one :project, key: :project_id
+  one_to_many :pages, key: :document_id
 
   BLOCK_SEPARATOR = ".\n"
+
+  def self.create_from_file(path, values={}, &block)
+    new_document = self.create(values.merge(
+      filename: File.basename(path),
+      size: File.size?(path)), &block)
+
+    # Copy file to project's files dir
+    FileUtils.mkdir_p(File.dirname(new_document.path))
+    FileUtils.mv(path, new_document.path)
+
+    new_document
+  end
 
   def before_validation
     self.percentage ||= 0
@@ -13,8 +25,8 @@ class Document < Sequel::Model(DB[:documents])
 
   def validate
     super
-    validates_presence [:filename, :size, :percentage]
-    validates_unique :filename
+    validates_presence [:project, :filename, :size, :percentage]
+    #validates_unique :filename
     validates_format /^\d+$/, :size if size
     validates_format /^\d+$/, :percentage if percentage
   end
@@ -27,7 +39,7 @@ class Document < Sequel::Model(DB[:documents])
   end
 
   def path
-    File.join(FILES_PATH, filename)
+    File.join(project.path, 'files', filename.to_s) if project.path
   end
 
   def text

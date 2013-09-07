@@ -9,6 +9,7 @@ end
 
 DB.create_table? :documents do
   primary_key :id
+  foreign_key :project_id, :projects, on_delete: :cascade
   String      :filename, null: false
   Integer     :size, null: false
   String      :title
@@ -18,12 +19,6 @@ DB.create_table? :documents do
   String      :state
   Integer     :percentage, null: false
   Text        :processed_text
-end
-
-DB.create_table? :documents_projects do
-  primary_key :id
-  foreign_key :document_id, :documents
-  foreign_key :project_id, :projects
 end
 
 DB.create_table? :pages do
