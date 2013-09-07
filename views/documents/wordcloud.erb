@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+
+<div class="container">
+  <div class="row">
+    <h2><%= @document.filename %></h2><p class="small"><%= @document.title %></p>
+  </div>
+
+  <div class="row">
+    <div id="wordcloud"></div>
+  </div>
+</div>
+
+<% content_for :js do %>
+  <script src="/js/d3.v3.min.js"></script>
+  <script src="/js/d3.layout.cloud.js"></script>
+
+  <script>
+    var WIDTH = 1170;
+    var HEIGHT = 500;
+    var MAX_WORDS = 300;
+
+    var fill = d3.scale.category20();
+
+    d3.csv("/documents/<%= @document.id %>/tokens.csv", function(csv) {
+      var words = $.map(csv, function(row) { return row["form"]; }).filter(function(token) {
+        return token.length > 4;
+      }).slice(0, MAX_WORDS);
+
+      d3.layout.cloud().size([WIDTH, HEIGHT])
+          .words(words.map(function(d) {
+            return {text: d, size: 10 + Math.random() * 90};
+          }))
+          .padding(5)
+          .rotate(function() { return ~~(Math.random() * 2) * 90; })
+          .font("Impact")
+          .fontSize(function(d) { return d.size; })
+          .on("end", draw)
+          .start();
+    });
+
+    function draw(words) {
+      d3.select("#wordcloud").append("svg")
+          .attr("width", WIDTH)
+          .attr("height", HEIGHT)
+        .append("g")
+          .attr("transform", "translate(" + parseInt(WIDTH / 2) + "," + parseInt(HEIGHT / 2) + ")")
+        .selectAll("text")
+          .data(words)
+        .enter().append("text")
+          .style("font-size", function(d) { return d.size + "px"; })
+          .style("font-family", "Impact")
+          .style("fill", function(d, i) { return fill(i); })
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function(d) { return d.text; });
+    }
+  </script>
+<% end %>

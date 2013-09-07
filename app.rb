@@ -81,7 +81,35 @@ namespace '/documents' do
     erb :'documents/view'
   end
 
+  get '/:id/wordcloud' do |id|
+    @document = Document[id]
+    erb :'documents/wordcloud'
+  end
+
+  get '/:id/tokens.csv' do |id|
+    content_type :csv
+
+    @document = Document[id]
+
+    require 'csv'
+    require 'lib/analyzer'
+
+    CSV.generate do |csv|
+      first_row = true
+      Analyzer.extract_tokens(@document.processed_text).each do |token|
+        if first_row
+          csv << token.keys
+          first_row = false
+        else
+          csv << token.values
+        end
+      end
+    end
+  end
+
   get '/:id/entities.csv' do |id|
+    content_type :csv
+
     @document = Document[id]
     csv_path = File.join(@document.project.path, 'entities', "#{@document.id}.csv")
     if File.exists?(csv_path)
