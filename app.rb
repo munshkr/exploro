@@ -51,24 +51,16 @@ namespace '/projects' do
 
     @project = Project[id]
 
-    require 'csv'
-    require 'lib/analyzer'
-
-    puts "=> Generating tokens for project"
-    CSV.generate do |csv|
-      first_row = true
-      @project.documents.each do |document|
-        puts "=> #{document.id}"
-        Analyzer.extract_tokens(document.processed_text).each do |token|
-          if first_row
-            csv << token.keys
-            first_row = false
-          else
-            csv << token.values
-          end
+    csv_path = File.join(APP_ROOT, 'tmp', "#{@project.id}__tokens.csv")
+    File.open(csv_path, 'wb') do |fd|
+      @project.documents.each do |doc|
+        File.open(doc.path, 'rb') do |doc_fd|
+          IO.copy_stream(doc_fd, fd)
         end
       end
     end
+
+    send_file csv_path, filename: "#{@project.name}__tokens.csv", type: 'text/csv'
   end
 
   get '/:id/wordcloud' do |id|
@@ -120,20 +112,12 @@ namespace '/documents' do
     content_type :csv
 
     @document = Document[id]
-
-    require 'csv'
-    require 'lib/analyzer'
-
-    CSV.generate do |csv|
-      first_row = true
-      Analyzer.extract_tokens(@document.processed_text).each do |token|
-        if first_row
-          csv << token.keys
-          first_row = false
-        else
-          csv << token.values
-        end
-      end
+    csv_path = File.join(@document.project.path, 'tokens', "#{@document.id}.csv")
+    if File.exists?(csv_path)
+      send_file csv_path, filename: "#{@document.filename}__tokens.csv", type: 'text/csv'
+    else
+      status 404
+      halt 'CSV not found'
     end
   end
 

@@ -59,7 +59,7 @@ class ExtractionJob < DocumentJob
     logger.info "#{doc.pages_dataset.count} pages were processed"
 
     logger.info "Save document"
-    doc.update(percentage: current_percentage(100, 100))
+    doc.update(state: :waiting, percentage: current_percentage(100, 100))
     logger.info "Status #{doc.percentage} %"
 
     next_job!(id)

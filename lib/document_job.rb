@@ -4,13 +4,14 @@ class DocumentJob
   Dir[File.join(APP_ROOT, 'lib', 'jobs', '*_job.rb')].each { |path| require path }
 
   FLOW = [
-    { :class => ExtractionJob,          :perc_ratio => 30 },
+    { :class => ExtractionJob,          :perc_ratio => 20 },
+    { :class => TokenExtractionJob,     :perc_ratio => 10 },
     { :class => LayoutAnalysisJob,      :perc_ratio => 10 },
     { :class => EntitiesRecognitionJob, :perc_ratio => 60 },
   ]
 
   def self.perform(id)
-    Document.where(id: id).update(state: 'waiting')
+    Document.where(id: id).update(percentage: 0, state: 'waiting')
     Qu.enqueue(FLOW.first[:class], id)
   end
 

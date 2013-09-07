@@ -90,7 +90,7 @@ class EntitiesRecognitionJob < DocumentJob
     #}
 
     logger.info "Save document"
-    doc.update(percentage: current_percentage(100, 100))
+    doc.update(state: :waiting, percentage: current_percentage(100, 100))
 
     #logger.info "Enqueue Coreference Resolution task"
     #Resque.enqueue(CoreferenceResolutionTask, document_id)
