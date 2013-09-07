@@ -34,13 +34,15 @@ namespace '/projects' do
   post '/new' do
     content_type :json
 
-    @project = Project.create(params[:project])
+    DB.transaction do
+      @project = Project.create(params[:project])
 
-    filenames = params[:filenames].split(',')
-    filenames.each do |filename|
-      temp_path = File.join(UPLOADED_FILES_PATH, filename)
-      doc = Document.create_from_file(temp_path, project: @project)
-      doc.process!
+      filenames = params[:filenames].split(',')
+      filenames.each do |filename|
+        temp_path = File.join(UPLOADED_FILES_PATH, filename)
+        doc = Document.create_from_file(temp_path, project: @project)
+        doc.process!
+      end
     end
 
     @project.to_json
