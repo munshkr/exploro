@@ -13,7 +13,10 @@
       <tbody>
         <% @project.documents.each do |document| %>
           <tr>
-            <td><a href="/documents/<%= document.id %>"><%= document.filename %></a></td>
+            <td>
+              <a href="/documents/<%= document.id %>"><%= document.filename %></a><br />
+              <a href="/documents/<%= document.id %>/entities.csv">entities.csv</a>
+            </td>
             <td><%= document.title %></td>
             <td style="width: 15em"><%= timeago_tag(document.created_at) %></td>
             <td style="width: 15em"><%= document.state %></td>

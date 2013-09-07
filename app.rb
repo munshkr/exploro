@@ -80,6 +80,17 @@ namespace '/documents' do
     @document = Document[id]
     erb :'documents/view'
   end
+
+  get '/:id/entities.csv' do |id|
+    @document = Document[id]
+    csv_path = File.join(@document.project.path, 'entities', "#{@document.id}.csv")
+    if File.exists?(csv_path)
+      send_file csv_path, filename: "#{@document.filename}__entities.csv", type: 'text/csv'
+    else
+      status 404
+      halt 'CSV not found'
+    end
+  end
 end
 
 helpers do
