@@ -1,9 +1,15 @@
 require 'sinatra'
 require 'sinatra/namespace'
 require 'sinatra/content_for'
+require 'sinatra/partial'
+
+register Sinatra::Partial
 
 configure do
   set :server, :puma
+  set :partial_template_engine, :erb
+
+  enable :partial_underscores
 end
 
 get '/' do
@@ -42,7 +48,7 @@ namespace '/projects' do
 
   get '/:id' do |id|
     @project = Project[id]
-    @documents = @project.documents
+    @documents = @project.documents_dataset.reverse_order(:created_at)
     erb :'projects/view'
   end
 
@@ -71,7 +77,7 @@ end
 
 namespace '/documents' do
   get '/' do
-    @documents = Document.reverse_order(:created_at).all
+    @documents = Document.reverse_order(:created_at)
     erb :'documents/index'
   end
 

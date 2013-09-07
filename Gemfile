@@ -19,6 +19,7 @@ gem 'xapian-ruby'
 # Webserver
 gem 'sinatra'
 gem 'sinatra-contrib'
+gem 'sinatra-partial'
 gem 'puma'
 
 # Background jobs
