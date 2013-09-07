@@ -13,9 +13,10 @@ class Document < Sequel::Model(DB[:documents])
 
   def validate
     super
-    validates_presence [:filename, :size]
+    validates_presence [:filename, :size, :percentage]
     validates_unique :filename
-    validates_format /^\d+$/, [:size, :percentage]
+    validates_format /^\d+$/, :size if size
+    validates_format /^\d+$/, :percentage if percentage
   end
 
   def process!
