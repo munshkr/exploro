@@ -43,18 +43,22 @@ class EntitiesRecognitionJob < DocumentJob
 
         ne_attrs[:inner_pos] = inner_pos
 
-        if first_row
-          csv << ne_attrs.keys
-          first_row = false
-        end
-        csv << ne_attrs.merge(
+        attrs = {
+          "text" => ne_attrs["form"].to_s.gsub('_', ' '),
+        }.merge(ne_attrs).merge({
           "tokens" => ne_attrs["tokens"].to_json,
           "inner_pos" => ne_attrs["inner_pos"].to_json
-        ).values
+        })
+
+        if first_row
+          csv << attrs.keys
+          first_row = false
+        else
+          csv << attrs.values
+        end
 
         if total_size && total_size > 0
           doc.update(percentage: current_percentage(cur_pos, total_size))
-          #logger.info "Status #{doc.percentage} %"
         end
 
         #ne_klass = case ne_attrs[:ne_class]
