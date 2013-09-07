@@ -103,6 +103,11 @@ namespace '/documents' do
     erb :'documents/view'
   end
 
+  get '/:id/download' do |id|
+    @document = Document[id]
+    send_file @document.path, filename: @document.filename
+  end
+
   get '/:id/wordcloud' do |id|
     @document = Document[id]
     erb :'documents/wordcloud'
