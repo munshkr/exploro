@@ -45,6 +45,36 @@ namespace '/projects' do
     @documents = @project.documents
     erb :'projects/view'
   end
+
+  get '/:id/tokens.csv' do |id|
+    content_type :csv
+
+    @project = Project[id]
+
+    require 'csv'
+    require 'lib/analyzer'
+
+    puts "=> Generating tokens for project"
+    CSV.generate do |csv|
+      first_row = true
+      @project.documents.each do |document|
+        puts "=> #{document.id}"
+        Analyzer.extract_tokens(document.processed_text).each do |token|
+          if first_row
+            csv << token.keys
+            first_row = false
+          else
+            csv << token.values
+          end
+        end
+      end
+    end
+  end
+
+  get '/:id/wordcloud' do |id|
+    @project = Project[id]
+    erb :'projects/wordcloud'
+  end
 end
 
 namespace '/documents' do

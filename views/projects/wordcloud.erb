@@ -4,7 +4,7 @@
 
 <div class="container">
   <div class="row">
-    <h2><%= @document.filename %></h2><p class="small"><%= @document.title %></p>
+    <h3>Proyecto: <%= @project.name %></h3>
   </div>
 
   <div class="row">
@@ -23,7 +23,7 @@
 
     var fill = d3.scale.category20();
 
-    d3.csv("/documents/<%= @document.id %>/tokens.csv", function(csv) {
+    d3.csv("/projects/<%= @project.id %>/tokens.csv", function(csv) {
       var words = $.map(csv, function(row) { return row["form"]; }).filter(function(token) {
         return token.length > 4;
       }); //.slice(0, MAX_WORDS);
