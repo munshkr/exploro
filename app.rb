@@ -32,8 +32,12 @@ namespace '/projects' do
 
     filenames = params[:filenames].split(',')
     filenames.each do |filename|
-      path = File.join(UPLOADED_FILES_PATH, filename)
-      doc = @project.add_document(filename: filename, size: File.size?(path))
+      temp_path = File.join(UPLOADED_FILES_PATH, filename)
+      doc = @project.add_document(filename: filename, size: File.size?(temp_path))
+
+      FileUtils.mkdir_p(File.dirname(doc.path))
+      FileUtils.mv(temp_path, doc.path)
+
       doc.process!
     end
 
