@@ -5,8 +5,8 @@ class DocumentJob
 
   FLOW = [
     { :class => ExtractionJob,          :perc_ratio => 20 },
-    { :class => TokenExtractionJob,     :perc_ratio => 10 },
     { :class => LayoutAnalysisJob,      :perc_ratio => 10 },
+    { :class => TokenExtractionJob,     :perc_ratio => 10 },
     { :class => EntitiesRecognitionJob, :perc_ratio => 60 },
   ]
 
