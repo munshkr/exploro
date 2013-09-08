@@ -18,3 +18,8 @@ Inspired by [OpenRefine](https://github.com/OpenRefine/OpenRefine) and
   * Freeling as PoS tagging and NERC engine
   * Fulltext search by lemmas and tags
   * Possibility to export everything on CSV/TSV
+
+## Screenshots ##
+
+[![Project view](http://i.imgur.com/KuEPvyb.png)](http://i.imgur.com/KuEPvyb.png)
+[![Wordcloud](http://i.imgur.com/a3PhC5Q.png)](http://i.imgur.com/a3PhC5Q.png)
