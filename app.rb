@@ -62,7 +62,8 @@ namespace '/projects' do
     csv_path = File.join(APP_ROOT, 'tmp', "#{@project.id}__tokens.csv")
     File.open(csv_path, 'wb') do |fd|
       @project.documents.each do |doc|
-        File.open(doc.path, 'rb') do |doc_fd|
+        doc_csv_path = File.join(doc.project.path, 'tokens', "#{doc.id}.csv")
+        File.open(doc_csv_path, 'rb') do |doc_fd|
           IO.copy_stream(doc_fd, fd)
         end
       end
@@ -74,6 +75,26 @@ namespace '/projects' do
   get '/:id/wordcloud' do |id|
     @project = Project[id]
     erb :'projects/wordcloud'
+  end
+
+  get '/:id/wordcloud.csv' do |id|
+    content_type :csv
+
+    @project = Project[id]
+
+    csv_path = File.join(APP_ROOT, 'tmp', "#{@project.id}__wordcloud.csv")
+    File.open(csv_path, 'wb') do |fd|
+      @project.documents.each do |doc|
+        doc_csv_path = File.join(doc.project.path, 'tokens', "#{doc.id}_wordcloud.csv")
+        if File.exists?(doc_csv_path)
+          File.open(doc_csv_path, 'rb') do |doc_fd|
+            IO.copy_stream(doc_fd, fd)
+          end
+        end
+      end
+    end
+
+    send_file csv_path, filename: "#{@project.name}__wordcloud.csv", type: 'text/csv'
   end
 end
 
@@ -119,6 +140,19 @@ namespace '/documents' do
   get '/:id/wordcloud' do |id|
     @document = Document[id]
     erb :'documents/wordcloud'
+  end
+
+  get '/:id/wordcloud.csv' do |id|
+    content_type :csv
+
+    @document = Document[id]
+    csv_path = File.join(@document.project.path, 'tokens', "#{@document.id}_wordcloud.csv")
+    if File.exists?(csv_path)
+      send_file csv_path, filename: "#{@document.filename}__wordcloud.csv", type: 'text/csv'
+    else
+      status 404
+      halt 'CSV not found'
+    end
   end
 
   get '/:id/tokens.csv' do |id|

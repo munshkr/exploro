@@ -10,6 +10,7 @@ class TokenExtractionJob < DocumentJob
     FileUtils.mkdir_p(File.dirname(csv_path))
 
     require 'csv'
+    logger.info "Extract tokens and generate CSV"
     CSV.open(csv_path, 'wb') do |csv|
       first_row = true
       total_size = doc.processed_text.size
@@ -27,6 +28,21 @@ class TokenExtractionJob < DocumentJob
         if cur_perc != doc.percentage
           doc.update(percentage: cur_perc)
         end
+      end
+    end
+
+    logger.info "Generate aggregated CSV for Wordcloud"
+    words = Hash.new(0)
+    CSV.foreach(csv_path, headers: true) do |row|
+      w = row['form'].downcase
+      words[w] += 1
+    end
+
+    csv_path = File.join(doc.project.path, 'tokens', "#{doc.id}_wordcloud.csv")
+    CSV.open(csv_path, 'wb') do |csv|
+      csv << ['text', 'count']
+      words.each do |word, count|
+        csv << [word, count]
       end
     end
 

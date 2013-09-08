@@ -19,23 +19,27 @@
   <script>
     var WIDTH = 1170;
     var HEIGHT = 500;
-    var MAX_WORDS = 300;
+    var MAX_WORDS = 500;
 
     var fill = d3.scale.category20();
 
-    d3.csv("/documents/<%= @document.id %>/tokens.csv", function(csv) {
-      var words = $.map(csv, function(row) { return row["form"]; }).filter(function(token) {
-        return token.length > 4;
-      }).slice(0, MAX_WORDS);
+    d3.csv("/documents/<%= @document.id %>/wordcloud.csv", function(csv) {
+      var tags = csv
+        .sort(function(a, b) { return b.count - a.count; })
+        .filter(function(d) { return d.text.length > 4; });
 
-      d3.layout.cloud().size([WIDTH, HEIGHT])
-          .words(words.map(function(d) {
-            return {text: d, size: 10 + Math.random() * 90};
-          }))
+      var fontSize = d3.scale.log().range([10, 100]);
+      if (tags.length) fontSize.domain([+tags[tags.length - 1].value || 1, +tags[0].count]);
+
+      var words = tags.slice(0, Math.min(tags.length, MAX_WORDS));
+
+      d3.layout.cloud()
+          .size([WIDTH, HEIGHT])
+          .words(words)
           .padding(5)
           .rotate(function() { return ~~(Math.random() * 2) * 90; })
           .font("Impact")
-          .fontSize(function(d) { return d.size; })
+          .fontSize(function(d) { return fontSize(+d.count); })
           .on("end", draw)
           .start();
     });
