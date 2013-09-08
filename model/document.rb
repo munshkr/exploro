@@ -1,6 +1,7 @@
 class Document < Sequel::Model(DB[:documents])
   plugin :timestamps
   plugin :validation_helpers
+  plugin :json_serializer
 
   many_to_one :project, key: :project_id
   one_to_many :pages, key: :document_id

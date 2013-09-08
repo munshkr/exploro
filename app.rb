@@ -182,6 +182,25 @@ namespace '/documents' do
   end
 end
 
+namespace '/api' do
+  before do
+    content_type :json
+  end
+
+  namespace '/documents' do
+    get '/state' do
+      if !params[:id] && !params[:ids]
+        status 400
+        halt 'missing :id or :ids params'
+      end
+
+      ids = Array(params[:id] || params[:ids].split(','))
+      documents = Document.where(id: ids).select(:id, :state, :percentage)
+      documents.to_json(naked: true)
+    end
+  end
+end
+
 helpers do
   def timeago_tag(time)
     "<abbr class=\"timeago\" title=\"#{time.utc.iso8601}\">#{time}</abbr>"

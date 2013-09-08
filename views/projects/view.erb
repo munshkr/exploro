@@ -2,12 +2,14 @@
   <div class="row">
     <h3>Proyecto: <%= @project.name %></h3>
     <% if @project.documents_dataset.count > 0 %>
-    <table class="table table-condensed">
+    <table class="table table-condensed documents">
       <thead>
-        <td>Nombre de archivo</td>
-        <td>Creado en</td>
-        <td>Estado</td>
-        <td>Progreso</td>
+        <tr>
+          <td>Nombre de archivo</td>
+          <td>Creado en</td>
+          <td>Estado</td>
+          <td>Progreso</td>
+        </tr>
       </thead>
       <tbody>
         <% @documents.each do |document| %>
@@ -20,3 +22,8 @@
     <% end %>
   </div>
 </div>
+
+<% content_for :js do %>
+  <script src="/js/document_list.js"></script>
+  <script>$(function() { setDocumentStateAutoUpdate(<%= @documents.map(&:id).to_json %>); });</script>
+<% end %>
