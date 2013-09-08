@@ -10,11 +10,11 @@ gem 'freeling-analyzer'
 # Main DB and key-value store for tokens
 gem 'sequel'
 gem 'sqlite3'
-gem 'daybreak'
+#gem 'daybreak'
 
 # Fulltext search
-gem 'xapian-fu'
-gem 'xapian-ruby'
+#gem 'xapian-fu'
+#gem 'xapian-ruby'
 
 # Webserver
 gem 'sinatra'
