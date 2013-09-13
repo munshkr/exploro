@@ -23,3 +23,17 @@ Inspired by [OpenRefine](https://github.com/OpenRefine/OpenRefine) and
 
 [![Project view](http://i.imgur.com/KuEPvyb.png)](http://i.imgur.com/KuEPvyb.png)
 [![Wordcloud](http://i.imgur.com/a3PhC5Q.png)](http://i.imgur.com/a3PhC5Q.png)
+
+## Install ##
+
+### Ubuntu / Debian ###
+
+You need Ruby 1.9.3+, if you don't have it installed, a Ruby version manager
+like [rbenv](https://github.com/sstephenson/rbenv) or [rvm](http://rvm.io/) is
+recommended.
+
+Then, run `./install.ubuntu.rb`.
+
+### Windows ###
+
+*to do*
