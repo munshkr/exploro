@@ -32,5 +32,5 @@ gem 'term-ansicolor'
 group :development do
   gem 'releasy'
   gem 'pry'
-  gem 'pry-debugger'
+  gem 'pry-debugger', platforms: :mri_19
 end
